@@ -4,6 +4,8 @@ This single-file mini-library is a lightweight fuel physics simulation. It handl
 https://github.com/user-attachments/assets/3b0a20c8-bec2-441b-a4a5-fdaee0f9cb8c
 
 ## Usage
+### Installation
+Simply copy over FuelSim.java into your project!
 ### Setup
 All measurements are in meters. Logging is done automatically when updateSim is called.
 In Robot.java:
