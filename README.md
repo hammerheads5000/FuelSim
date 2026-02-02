@@ -1,5 +1,5 @@
 # FuelSim
-This single-file mini-library is a lightweight fuel physics simulation. It handles fuel-fuel, fuel-field, fuel-net, fuel-trench, and fuel-robot collisions as well as projectile motion (ignoring air resistance) and scoring in the hub. There is also included functionality for intakes. It's not a perfect analog of real life, as some of the parameters need to be tuned (namely the coefficients of restitution of various collisions), but it is close enough for simulation purposes. I built this using AdvantageKit's built-in logging, but it can easily be modified to use any logging method as demonstrated below.
+This single-file mini-library is a lightweight fuel physics simulation. It handles fuel-fuel, fuel-field, fuel-net, fuel-trench, and fuel-robot collisions as well as projectile motion (with optional air drag simulation) and scoring in the hub. There is also included functionality for intakes. It's not a perfect analog of real life, as some of the parameters need to be tuned (namely the coefficients of restitution of various collisions), but it is close enough for simulation purposes. I built this using AdvantageKit's built-in logging, but it can easily be modified to use any logging method as demonstrated below.
 ## Demo
 https://github.com/user-attachments/assets/3b0a20c8-bec2-441b-a4a5-fdaee0f9cb8c
 
@@ -39,6 +39,8 @@ FuelSim.getInstance().setSubticks(int subticks); // sets the number of physics i
 
 FuelSim.getInstance().start(); // enables the simulation to run (updateSim must still be called periodically)
 FuelSim.getInstance().stop(); // stops the simulation running (updateSim will do nothing until start is called again)
+
+FuelSim.getInstance().enableAirResistance() // an additional drag force will be applied to fuel in physics update step
 ```
 ### While Running
 These are methods you can call while the program is running.

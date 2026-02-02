@@ -14,6 +14,8 @@ public class FuelSim {
     private static final double PERIOD = 0.02; // sec
     private static int subticks = 5;
     private static final Translation3d GRAVITY = new Translation3d(0, 0, -9.81); // m/s^2
+	// Room temperature dry air density: https://en.wikipedia.org/wiki/Density_of_air#Dry_air
+	private static final double AIR_DENSITY = 1.2041; // kg/m^3
     private static final double FIELD_COR = Math.sqrt(22 / 51.5); // coefficient of restitution with the field
     private static final double FUEL_COR = 0.5; // coefficient of restitution with another fuel
     private static final double NET_COR = 0.2; // coefficient of restitution with the net
@@ -27,6 +29,11 @@ public class FuelSim {
     private static final double TRENCH_BAR_HEIGHT = 0.102;
     private static final double TRENCH_BAR_WIDTH = 0.152;
     private static final double FRICTION = 0.1; // proportion of horizontal velocity to lose per second while on ground
+	private static final double FUEL_MASS = 0.448 * 0.45392; // kgs
+	private static final double FUEL_CROSS_AREA = Math.PI * FUEL_RADIUS*FUEL_RADIUS;
+	// Drag coefficient of smooth sphere: https://en.wikipedia.org/wiki/Drag_coefficient#/media/File:14ilf1l.svg
+	private static final double DRAG_COF = 0.47; // dimensionless
+	private static final double DRAG_FORCE_FACTOR = 0.5 * AIR_DENSITY * DRAG_COF * FUEL_CROSS_AREA;
 
     private static FuelSim instance = null;
 
@@ -90,9 +97,20 @@ public class FuelSim {
 
         private void update() {
             pos = pos.plus(vel.times(PERIOD / subticks));
-            if (pos.getZ() > FUEL_RADIUS) {
-                vel = vel.plus(GRAVITY.times(PERIOD / subticks));
-            }
+						if (pos.getZ() > FUEL_RADIUS) {
+							Translation3d Fg = GRAVITY.times(FUEL_MASS);
+							Translation3d Fd = new Translation3d();
+
+							if (simulateAirResistance) {
+								double speed = vel.getNorm();
+								if (speed > 1e-6) {
+									Fd = vel.times(-DRAG_FORCE_FACTOR * speed);
+								}
+							}
+
+							Translation3d accel = Fg.plus(Fd).div(FUEL_MASS);
+							vel = vel.plus(accel.times(PERIOD / subticks));
+					  }
             if (Math.abs(vel.getZ()) < 0.05 && pos.getZ() <= FUEL_RADIUS + 0.03) {
                 vel = new Translation3d(vel.getX(), vel.getY(), 0);
                 vel = vel.times(1 - FRICTION * PERIOD / subticks);
@@ -281,6 +299,7 @@ public class FuelSim {
 
     private ArrayList<Fuel> fuels = new ArrayList<Fuel>();
     private boolean running = false;
+		private boolean simulateAirResistance = false;
     private Supplier<Pose2d> robotSupplier = null;
     private Supplier<ChassisSpeeds> robotSpeedsSupplier = null;
     private double robotWidth; // size along the robot's y axis
@@ -364,6 +383,11 @@ public class FuelSim {
     public void stop() {
         running = false;
     }
+
+		/** Enables accounting for drag force in physics step **/
+		public void enableAirResistance() {
+			simulateAirResistance = true;
+		}
 
     /**
      * Sets the number of physics iterations per loop (0.02s)
