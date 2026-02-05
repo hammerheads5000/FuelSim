@@ -23,7 +23,6 @@ import java.util.function.Supplier;
 
 public class FuelSim {
     protected static final double PERIOD = 0.02; // sec
-    protected static int subticks = 5;
     protected static final Translation3d GRAVITY = new Translation3d(0, 0, -9.81); // m/s^2
     // Room temperature dry air density: https://en.wikipedia.org/wiki/Density_of_air#Dry_air
     protected static final double AIR_DENSITY = 1.2041; // kg/m^3
@@ -315,6 +314,7 @@ public class FuelSim {
     protected double robotLength; // size along the robot's x axis
     protected double bumperHeight;
     protected ArrayList<SimIntake> intakes = new ArrayList<>();
+    protected int subticks = 5;
 
     /**
      * Creates a new instance of FuelSim
@@ -416,8 +416,8 @@ public class FuelSim {
      * Sets the number of physics iterations per loop (0.02s)
      * @param subticks
      */
-    public static void setSubticks(int subticks) {
-        FuelSim.subticks = subticks;
+    public void setSubticks(int subticks) {
+        this.subticks = subticks;
     }
 
     /**

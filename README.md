@@ -35,8 +35,7 @@ fuelSim.registerIntake(
         shouldIntakeSupplier, // (optional) BooleanSupplier for whether the intake should be active at a given moment
         callback); // (optional) Runnable called whenever a fuel is intaked
 
-FuelSim.setSubticks(int subticks); // sets the number of physics iterations to perform per 20ms loop. Default = 5
-                                   // Note this is a static method!
+fuelSim.setSubticks(int subticks); // sets the number of physics iterations to perform per 20ms loop. Default = 5
 
 fuelSim.start(); // enables the simulation to run (updateSim must still be called periodically)
 fuelSim.stop(); // stops the simulation running (updateSim will do nothing until start is called again)
