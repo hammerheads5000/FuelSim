@@ -117,3 +117,13 @@ public void launchFuel(LinearVelocity vel, Angle angle) {
     FuelSim.getInstance().spawnFuel(initialPosition, launchVel(vel, angle));
 }
 ```
+# Contributing
+Contributions are welcome! This project generally follows the [Palantir Java format](https://github.com/palantir/palantir-java-format). The specifics of PJF aren't super important but please make sure you follow these guidelines:
+- Don't apply any auto-formatter aside from PJF
+- Use 4-space indentations
+- Try and keep to the style of the rest of the code
+- Keep the file self-contained. No references to external files aside from standard WPILib and AdvantageKit.
+- Document all public methods and any non-obvious private methods or variabels. Use javadoc docstrings.
+- Test all code before making a pull request
+
+Thank you!
