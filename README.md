@@ -23,15 +23,15 @@ fuelSim.spawnStartingFuel(); // spawns fuel in the depots and neutral zone
 
 // Register a robot for collision with fuel
 fuelSim.registerRobot(
-        width, // from left to right
-        length, // from front to back
-        bumperHeight, // from floor to top of bumpers
+        width, // from left to right in meters
+        length, // from front to back in meters
+        bumperHeight, // from floor to top of bumpers in meters
         poseSupplier, // Supplier<Pose2d> of robot pose
         fieldSpeedsSupplier); // Supplier<ChassisSpeeds> of field-centric chassis speeds
 
 // Register an intake to remove fuel from the field as a rectangular bounding box
 fuelSim.registerIntake(
-        minX, maxX, minY, maxY, // robot-centric coordinates for bounding box
+        minX, maxX, minY, maxY, // robot-centric coordinates for bounding box in meters
         shouldIntakeSupplier, // (optional) BooleanSupplier for whether the intake should be active at a given moment
         callback); // (optional) Runnable called whenever a fuel is intaked
 
