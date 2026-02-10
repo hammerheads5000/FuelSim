@@ -265,14 +265,14 @@ public class FuelSim {
 
     @SuppressWarnings("unchecked")
     protected final ArrayList<Fuel>[][] grid = new ArrayList[GRID_COLS][GRID_ROWS];
+    private final ArrayList<ArrayList<Fuel>> activeCells = new ArrayList<>();
 
     protected void handleFuelCollisions(ArrayList<Fuel> fuels) {
         // Clear grid
-        for (int i = 0; i < GRID_COLS; i++) {
-            for (int j = 0; j < GRID_ROWS; j++) {
-                grid[i][j].clear();
-            }
+        for (ArrayList<Fuel> cell : activeCells) {
+            cell.clear();
         }
+        activeCells.clear();
 
         // Populate grid
         for (Fuel fuel : fuels) {
@@ -281,6 +281,9 @@ public class FuelSim {
 
             if (col >= 0 && col < GRID_COLS && row >= 0 && row < GRID_ROWS) {
                 grid[col][row].add(fuel);
+                if (grid[col][row].size() == 1) {
+                   activeCells.add(grid[col][row]);
+                }
             }
         }
 
